@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><title>Analytics</title></head>
+<body>
+    <h1>Analytics Dashboard</h1>
+    <table border="1">
+        <tr><th>Short Code</th><th>Original URL</th><th>Clicks</th><th>Created</th></tr>
+        {% for url in urls %}
+        <tr>
+            <td>{{ url.short_code }}</td>
+            <td>{{ url.original_url[:50] }}...</td>
+            <td>{{ url.click_count }}</td>
+            <td>{{ url.created_at.strftime('%Y-%m-%d') }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/">Back to Home</a>
+</body>
+</html>
