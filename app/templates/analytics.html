@@ -1,19 +1,55 @@
 <!DOCTYPE html>
 <html>
-<head><title>Analytics</title></head>
+<head>
+    <title>Analytics Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 40px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: #2c3e50; margin-bottom: 25px; }
+        table { width: 100%; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-collapse: collapse; overflow: hidden; }
+        th { background: #3498db; color: white; padding: 15px; text-align: left; }
+        td { padding: 12px 15px; border-bottom: 1px solid #eee; }
+        tr:hover { background: #f8f9fa; }
+        .clicks { background: #e8f5e9; color: #27ae60; padding: 4px 10px; border-radius: 20px; font-weight: bold; }
+        .back-link { display: inline-block; margin-top: 20px; color: #3498db; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        .total { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 25px; display: flex; gap: 30px; }
+        .stat { text-align: center; }
+        .stat-num { font-size: 32px; font-weight: bold; color: #3498db; }
+        .stat-label { color: #666; font-size: 14px; }
+    </style>
+</head>
 <body>
-    <h1>Analytics Dashboard</h1>
-    <table border="1">
-        <tr><th>Short Code</th><th>Original URL</th><th>Clicks</th><th>Created</th></tr>
-        {% for url in urls %}
-        <tr>
-            <td>{{ url.short_code }}</td>
-            <td>{{ url.original_url[:50] }}...</td>
-            <td>{{ url.click_count }}</td>
-            <td>{{ url.created_at.strftime('%Y-%m-%d') }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <a href="/">Back to Home</a>
+    <div class="container">
+        <h1>📊 Analytics Dashboard</h1>
+        <div class="total">
+            <div class="stat">
+                <div class="stat-num">{{ urls|length }}</div>
+                <div class="stat-label">Total URLs</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">{{ urls|sum(attribute='click_count') }}</div>
+                <div class="stat-label">Total Clicks</div>
+            </div>
+        </div>
+        <table>
+            <tr>
+                <th>Short Code</th>
+                <th>Original URL</th>
+                <th>Clicks</th>
+                <th>Created</th>
+            </tr>
+            {% for url in urls %}
+            <tr>
+                <td><strong>{{ url.short_code }}</strong></td>
+                <td>{{ url.original_url[:60] }}{% if url.original_url|length > 60 %}...{% endif %}</td>
+                <td><span class="clicks">{{ url.click_count }}</span></td>
+                <td>{{ url.created_at.strftime('%Y-%m-%d') }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="/" class="back-link">← Back to Home</a>
+    </div>
 </body>
 </html>
