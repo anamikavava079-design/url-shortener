@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  flask-app:
+    image: anamika098/url-shortener:v2
+    container_name: flask-app
+    ports:
+      - "5000:5000"
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - flask-app
